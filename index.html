@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>한국형 메타태그 생성기 - 네이버/구글 SEO 최적화 도구</title>
+    <meta name="description" content="네이버와 구글에 최적화된 한국형 메타태그를 무료로 생성하세요. 카페24, 메이크샵, 워드프레스 호환. 한국어 키워드 분석 포함.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 40px 0;
+        }
+        
+        .header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        
+        .platform-badges {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        
+        .badge {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .main-content {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .seo-type-selector {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .seo-type-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background: white;
+            border: 2px solid #e1e5e9;
+        }
+        
+        .radio-item:hover {
+            background: #f0f8ff;
+            border-color: #667eea;
+        }
+        
+        .radio-item input[type="radio"] {
+            margin: 0;
+        }
+        
+        .radio-item.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+            font-size: 1.1rem;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #fafbfc;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .char-count {
+            text-align: right;
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .char-count.warning {
+            color: #f39c12;
+        }
+        
+        .char-count.error {
+            color: #e74c3c;
+        }
+        
+        .korean-tip {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 6px;
+            padding: 10px;
+            font-size: 0.9rem;
+            color: #856404;
+            margin-top: 8px;
+        }
+        
+        .generate-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin: 20px 0;
+            font-weight: 600;
+            text-transform: none;
+        }
+        
+        .generate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .result-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 30px;
+            border: 2px solid #e1e5e9;
+        }
+        
+        .result-title {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin: 15px 0;
+            position: relative;
+            border-left: 4px solid #667eea;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .copy-btn:hover {
+            background: #5a67d8;
+        }
+        
+        .preview-section {
+            background: white;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .preview-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 2px solid #e1e5e9;
+            background: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .tab.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .preview-title {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .search-preview {
+            border-left: 4px solid #4285f4;
+            padding-left: 15px;
+            background: #f8f9ff;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        
+        .naver-preview {
+            border-left: 4px solid #03c75a;
+            padding-left: 15px;
+            background: #f0fff4;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        
+        .search-title {
+            font-size: 18px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            text-decoration: underline;
+            font-weight: 500;
+        }
+        
+        .google-title {
+            color: #1a0dab;
+        }
+        
+        .naver-title {
+            color: #03c75a;
+        }
+        
+        .search-url {
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .google-url {
+            color: #006621;
+        }
+        
+        .naver-url {
+            color: #666;
+        }
+        
+        .search-description {
+            color: #545454;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .korean-seo-tips {
+            background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 100%);
+            border-radius: 10px;
+            padding: 25px;
+            margin: 30px 0;
+            border-left: 5px solid #27ae60;
+        }
+        
+        .korean-seo-tips h3 {
+            color: #2d3436;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .tip-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .tip-item {
+            background: rgba(255,255,255,0.7);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid #27ae60;
+        }
+        
+        .tip-item strong {
+            color: #2d3436;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .platform-integration {
+            background: #fff8e1;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 30px 0;
+            border-left: 5px solid #ffa726;
+        }
+        
+        .platform-integration h3 {
+            color: #e65100;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .platform-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #ffa726;
+        }
+        
+        .platform-item .platform-name {
+            font-weight: 600;
+            color: #e65100;
+            margin-bottom: 5px;
+        }
+        
+        .platform-item .platform-desc {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .ad-space {
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            margin: 30px 0;
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+            
+            .radio-group {
+                flex-direction: column;
+            }
+            
+            .tip-grid,
+            .platform-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .preview-tabs {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🇰🇷 한국형 SEO 메타태그 생성기</h1>
+            <p class="subtitle">네이버와 구글에 최적화된 메타태그를 무료로 생성하세요</p>
+            <div class="platform-badges">
+                <span class="badge">🟢 네이버 최적화</span>
+                <span class="badge">🔵 구글 최적화</span>
+                <span class="badge">🛍️ 쇼핑몰 지원</span>
+                <span class="badge">📱 모바일 친화적</span>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="seo-type-selector">
+                <div class="seo-type-title">🎯 최적화 타겟 선택</div>
+                <div class="radio-group">
+                    <label class="radio-item active" onclick="selectSEOType(this, 'both')">
+                        <input type="radio" name="seoType" value="both" checked>
+                        <span>네이버 + 구글 (권장)</span>
+                    </label>
+                    <label class="radio-item" onclick="selectSEOType(this, 'naver')">
+                        <input type="radio" name="seoType" value="naver">
+                        <span>네이버 중심</span>
+                    </label>
+                    <label class="radio-item" onclick="selectSEOType(this, 'google')">
+                        <input type="radio" name="seoType" value="google">
+                        <span>구글 중심</span>
+                    </label>
+                </div>
+            </div>
+
+            <form id="metaForm">
+                <div class="form-group">
+                    <label for="websiteType">웹사이트 유형</label>
+                    <select id="websiteType" onchange="updateTemplates()">
+                        <option value="business">비즈니스/회사</option>
+                        <option value="blog">블로그/개인</option>
+                        <option value="ecommerce">쇼핑몰/이커머스</option>
+                        <option value="restaurant">음식점/카페</option>
+                        <option value="medical">병원/의료</option>
+                        <option value="education">교육/학원</option>
+                        <option value="portfolio">포트폴리오</option>
+                        <option value="news">뉴스/미디어</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="title">페이지 제목 (Title)</label>
+                    <input type="text" id="title" placeholder="예: 맛있는 한국 전통 음식 레시피 모음 - 우리집 레시피">
+                    <div class="char-count" id="titleCount">0/30자 (네이버 권장) / 0/60자 (구글 권장)</div>
+                    <div class="korean-tip">💡 한국어는 영어보다 짧게 표시되므로 30자 이내 권장</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">페이지 설명 (Description)</label>
+                    <textarea id="description" placeholder="예: 집에서 쉽게 만들 수 있는 한국 전통 음식 레시피를 소개합니다. 김치찌개, 불고기, 비빔밥 등 다양한 요리법과 함께 영양 정보도 확인해보세요."></textarea>
+                    <div class="char-count" id="descCount">0/80자 (네이버 권장) / 0/160자 (구글 권장)</div>
+                    <div class="korean-tip">💡 네이버는 80자, 구글은 160자 이내로 작성하세요</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="keywords">한국어 키워드 (쉼표로 구분)</label>
+                    <input type="text" id="keywords" placeholder="예: 한국음식, 레시피, 요리법, 집밥, 전통음식, 한식요리">
+                    <div class="korean-tip">💡 한국어 검색어 위주로 입력하세요 (영어 혼용 가능)</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="location">지역 정보 (선택사항)</label>
+                    <input type="text" id="location" placeholder="예: 서울, 강남구, 부산, 대구">
+                    <div class="korean-tip">💡 로컬 비즈니스인 경우 지역명을 포함하세요</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="url">웹사이트 URL</label>
+                    <input type="url" id="url" placeholder="예: https://mywebsite.co.kr">
+                </div>
+
+                <div class="form-group">
+                    <label for="siteName">사이트명</label>
+                    <input type="text" id="siteName" placeholder="예: 우리집 레시피">
+                </div>
+
+                <div class="form-group">
+                    <label for="imageUrl">대표 이미지 URL (선택사항)</label>
+                    <input type="url" id="imageUrl" placeholder="예: https://mywebsite.co.kr/images/main.jpg">
+                    <div class="korean-tip">💡 1200x630px 권장 (카카오톡, 페이스북 공유 최적화)</div>
+                </div>
+
+                <button type="button" class="generate-btn" onclick="generateKoreanMetaTags()">
+                    🚀 한국형 메타태그 생성하기
+                </button>
+            </form>
+
+            <div class="korean-seo-tips">
+                <h3>🇰🇷 한국 SEO 최적화 팁</h3>
+                <div class="tip-grid">
+                    <div class="tip-item">
+                        <strong>네이버 SEO</strong>
+                        블로그, 카페 연동과 백링크가 중요합니다
+                    </div>
+                    <div class="tip-item">
+                        <strong>한글 키워드</strong>
+                        한국어 검색어를 우선적으로 사용하세요
+                    </div>
+                    <div class="tip-item">
+                        <strong>지역 SEO</strong>
+                        '서울', '강남' 등 지역명 포함 시 검색 노출 향상
+                    </div>
+                    <div class="tip-item">
+                        <strong>모바일 최적화</strong>
+                        한국 사용자의 90%가 모바일 검색 이용
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 광고 공간 -->
+        <div class="ad-space">
+            <p>🎯 한국 비즈니스를 위한 광고 - Google AdSense</p>
+            <small>SEO 도구, 웹호스팅, 마케팅 서비스 광고</small>
+        </div>
+
+        <div id="results" style="display: none;">
+            <div class="main-content">
+                <div class="result-section">
+                    <h2 class="result-title">📄 생성된 한국형 메타태그</h2>
+                    
+                    <h3>기본 메타태그 (HTML)</h3>
+                    <div class="code-block" id="basicMeta">
+                        <button class="copy-btn" onclick="copyToClipboard('basicMeta')">복사</button>
+                        <div id="basicMetaContent"></div>
+                    </div>
+
+                    <h3>오픈그래프 (소셜미디어/카카오톡)</h3>
+                    <div class="code-block" id="ogMeta">
+                        <button class="copy-btn" onclick="copyToClipboard('ogMeta')">복사</button>
+                        <div id="ogMetaContent"></div>
+                    </div>
+
+                    <h3>네이버 최적화 메타태그</h3>
+                    <div class="code-block" id="naverMeta">
+                        <button class="copy-btn" onclick="copyToClipboard('naverMeta')">복사</button>
+                        <div id="naverMetaContent"></div>
+                    </div>
+                </div>
+
+                <div class="preview-section">
+                    <h2 class="preview-title">🔍 검색 결과 미리보기</h2>
+                    <div class="preview-tabs">
+                        <div class="tab active" onclick="showTab('google')">구글 검색</div>
+                        <div class="tab" onclick="showTab('naver')">네이버 검색</div>
+                    </div>
+
+                    <div class="tab-content active" id="google-tab">
+                        <div class="search-preview">
+                            <div class="search-title google-title" id="googleTitle">페이지 제목</div>
+                            <div class="search-url google-url" id="googleUrl">https://example.co.kr</div>
+                            <div class="search-description" id="googleDescription">페이지 설명</div>
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="naver-tab">
+                        <div class="naver-preview">
+                            <div class="search-title naver-title" id="naverTitle">페이지 제목</div>
+                            <div class="search-url naver-url" id="naverUrl">example.co.kr</div>
+                            <div class="search-description" id="naverDescription">페이지 설명</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="platform-integration">
+                <h3>🔧 쇼핑몰/CMS 연동 가이드</h3>
+                <div class="platform-grid">
+                    <div class="platform-item">
+                        <div class="platform-name">카페24</div>
+                        <div class="platform-desc">기본설정 > SEO 설정에서 적용</div>
+                    </div>
+                    <div class="platform-item">
+                        <div class="platform-name">메이크샵</div>
+                        <div class="platform-desc">디자인 > HTML 편집에서 추가</div>
+                    </div>
+                    <div class="platform-item">
+                        <div class="platform-name">워드프레스</div>
+                        <div class="platform-desc">Yoast SEO 플러그인 사용</div>
+                    </div>
+                    <div class="platform-item">
+                        <div class="platform-name">그누보드</div>
+                        <div class="platform-desc">관리자 > 환경설정 > 기본환경설정</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 추가 광고 공간 -->
+        <div class="ad-space">
+            <p>💼 한국 중소기업을 위한 디지털 마케팅 솔루션</p>
+            <small>네이버 광고, 구글 애즈, 카카오 비즈니스 관련 광고</small>
+        </div>
+    </div>
+
+    <script>
+        let currentSEOType = 'both';
+        
+        // 웹사이트 템플릿 데이터
+        const templates = {
+            business: {
+                title: "회사명 - 전문 서비스 제공업체",
+                desc: "고품질 서비스를 제공하는 전문업체입니다. 고객 만족을 위해 최선을 다하겠습니다.",
+                keywords: "회사, 서비스, 전문, 고품질, 신뢰"
+            },
+            blog: {
+                title: "개인 블로그 - 일상과 정보 공유",
+                desc: "일상 이야기와 유용한 정보를 공유하는 개인 블로그입니다.",
+                keywords: "블로그, 일상, 정보, 공유, 개인"
+            },
+            ecommerce: {
+                title: "온라인 쇼핑몰 - 최고 품질 상품",
+                desc: "합리적인 가격으로 최고 품질의 상품을 판매하는 온라인 쇼핑몰입니다.",
+                keywords: "쇼핑몰, 온라인, 상품, 할인, 배송"
+            },
+            restaurant: {
+                title: "맛집 이름 - 정통 한식 전문점",
+                desc: "신선한 재료로 만든 정통 한식을 제공하는 맛집입니다. 가족 모임, 회식 환영.",
+                keywords: "맛집, 한식, 음식점, 가족모임, 회식"
+            },
+            medical: {
+                title: "병원명 - 전문 의료진과 최신 장비",
+                desc: "경험 많은 전문 의료진과 최신 의료장비로 최고의 의료서비스를 제공합니다.",
+                keywords: "병원, 의료, 전문의, 진료, 건강"
+            },
+            education: {
+                title: "학원명 - 최고의 교육 성과",
+                desc: "체계적인 커리큘럼과 우수한 강사진으로 최고의 교육 성과를 만들어갑니다.",
+                keywords: "학원, 교육, 과외, 성적향상, 입시"
+            },
+            portfolio: {
+                title: "이름 - 포트폴리오 및 작품 소개",
+                desc: "창의적이고 전문적인 작품들을 소개하는 포트폴리오 사이트입니다.",
+                keywords: "포트폴리오, 작품, 디자인, 개발, 창작"
+            },
+            news: {
+                title: "뉴스 사이트 - 최신 소식과 정보",
+                desc: "신속하고 정확한 뉴스와 다양한 정보를 제공하는 미디어 사이트입니다.",
+                keywords: "뉴스, 소식, 정보, 미디어, 기사"
+            }
+        };
+
+        // 지역 코드 매핑
+        const regionCodes = {
+            '서울': '11',
+            '부산': '26',
+            '대구': '27',
+            '인천': '28',
+            '광주': '29',
+            '대전': '30',
+            '울산': '31',
+            '세종': '36',
+            '경기': '41',
+            '강원': '42',
+            '충북': '43',
+            '충남': '44',
+            '전북': '45',
+            '전남': '46',
+            '경북': '47',
+            '경남': '48',
+            '제주': '50'
+        };
+        
+        function selectSEOType(element, type) {
+            // 모든 radio-item에서 active 클래스 제거
+            document.querySelectorAll('.radio-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // 선택된 요소에 active 클래스 추가
+            element.classList.add('active');
+            element.querySelector('input').checked = true;
+            currentSEOType = type;
+            
+            updateCharCountLabels();
+        }
+        
+        function updateCharCountLabels() {
+            const titleCount = document.getElementById('titleCount');
+            const descCount = document.getElementById('descCount');
+            
+            if (currentSEOType === 'naver') {
+                titleCount.textContent = '0/30자 (네이버 권장)';
+                descCount.textContent = '0/80자 (네이버 권장)';
+            } else if (currentSEOType === 'google') {
+                titleCount.textContent = '0/60자 (구글 권장)';
+                descCount.textContent = '0/160자 (구글 권장)';
+            } else {
+                titleCount.textContent = '0/30자 (네이버 권장) / 0/60자 (구글 권장)';
+                descCount.textContent = '0/80자 (네이버 권장) / 0/160자 (구글 권장)';
+            }
+        }
+
+        function updateCharCount(inputId, countId, naverMax, googleMax) {
+            const input = document.getElementById(inputId);
+            const counter = document.getElementById(countId);
+            const length = input.value.length;
+            
+            if (currentSEOType === 'naver') {
+                counter.textContent = `${length}/${naverMax}자 (네이버 권장)`;
+                if (length > naverMax * 1.2) {
+                    counter.className = 'char-count error';
+                } else if (length > naverMax) {
+                    counter.className = 'char-count warning';
+                } else {
+                    counter.className = 'char-count';
+                }
+            } else if (currentSEOType === 'google') {
+                counter.textContent = `${length}/${googleMax}자 (구글 권장)`;
+                if (length > googleMax * 1.2) {
+                    counter.className = 'char-count error';
+                } else if (length > googleMax) {
+                    counter.className = 'char-count warning';
+                } else {
+                    counter.className = 'char-count';
+                }
+            } else {
+                counter.textContent = `${length}/${naverMax}자 (네이버) / ${length}/${googleMax}자 (구글)`;
+                if (length > googleMax * 1.2) {
+                    counter.className = 'char-count error';
+                } else if (length > naverMax) {
+                    counter.className = 'char-count warning';
+                } else {
+                    counter.className = 'char-count';
+                }
+            }
+        }
+
+        function updateTemplates() {
+            const websiteType = document.getElementById('websiteType').value;
+            const titleInput = document.getElementById('title');
+            const descInput = document.getElementById('description');
+            const keywordsInput = document.getElementById('keywords');
+
+            if (templates[websiteType]) {
+                titleInput.placeholder = `예: ${templates[websiteType].title}`;
+                descInput.placeholder = `예: ${templates[websiteType].desc}`;
+                keywordsInput.placeholder = `예: ${templates[websiteType].keywords}`;
+            }
+        }
+
+        function getRegionCode(location) {
+            for (let region in regionCodes) {
+                if (location.includes(region)) {
+                    return regionCodes[region];
+                }
+            }
+            return '11'; // 기본값: 서울
+        }
+
+        function generateKoreanMetaTags() {
+            const title = document.getElementById('title').value || '페이지 제목';
+            const description = document.getElementById('description').value || '페이지 설명';
+            const keywords = document.getElementById('keywords').value;
+            const location = document.getElementById('location').value;
+            const url = document.getElementById('url').value || 'https://example.co.kr';
+            const siteName = document.getElementById('siteName').value || '사이트명';
+            const imageUrl = document.getElementById('imageUrl').value || 'https://via.placeholder.com/1200x630';
+
+            // 지역 정보가 있으면 제목과 설명에 추가
+            let enhancedTitle = title;
+            let enhancedDescription = description;
+            
+            if (location && !title.includes(location)) {
+                enhancedTitle = `${title} | ${location}`;
+            }
+
+            // 기본 메타태그 생성 (한국형 최적화)
+            const basicMeta = `<title>${enhancedTitle}</title>
+<meta name="description" content="${enhancedDescription}">
+<meta name="keywords" content="${keywords}">
+<meta name="author" content="${siteName}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="robots" content="index, follow">
+<meta name="language" content="Korean">
+<meta name="geo.region" content="KR">${location ? `\n<meta name="geo.placename" content="${location}">` : ''}
+<meta name="format-detection" content="telephone=no">`;
+
+            // 오픈그래프 메타태그 생성 (카카오톡 최적화)
+            const ogMeta = `<meta property="og:title" content="${enhancedTitle}">
+<meta property="og:description" content="${enhancedDescription}">
+<meta property="og:image" content="${imageUrl}">
+<meta property="og:url" content="${url}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="${siteName}">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="${enhancedTitle}">
+
+<!-- 카카오톡 최적화 -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${enhancedTitle}">
+<meta name="twitter:description" content="${enhancedDescription}">
+<meta name="twitter:image" content="${imageUrl}">`;
+
+            // 네이버 최적화 메타태그
+            const naverMeta = `<!-- 네이버 서치어드바이저 최적화 -->
+<meta name="naver-site-verification" content="네이버_사이트_인증_코드">
+<meta name="NaverBot" content="All">
+<meta name="YetiBot" content="All">
+
+<!-- 네이버 블로그/카페 최적화 -->
+<meta property="naverblog" content="noblogbody">
+<meta name="referrer" content="always">
+
+<!-- 모바일 최적화 (한국 사용자 90%가 모바일) -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="${siteName}">
+
+<!-- 네이버 지도 최적화 (로컬 비즈니스) -->${location ? `\n<meta name="geo.region" content="KR-${getRegionCode(location)}">
+<meta name="geo.position" content="위도;경도">
+<meta name="ICBM" content="위도, 경도">` : ''}`;
+
+            // 결과 표시
+            document.getElementById('basicMetaContent').textContent = basicMeta;
+            document.getElementById('ogMetaContent').textContent = ogMeta;
+            document.getElementById('naverMetaContent').textContent = naverMeta;
+
+            // 미리보기 업데이트
+            document.getElementById('googleTitle').textContent = enhancedTitle;
+            document.getElementById('googleUrl').textContent = url;
+            document.getElementById('googleDescription').textContent = enhancedDescription;
+            
+            document.getElementById('naverTitle').textContent = enhancedTitle;
+            try {
+                document.getElementById('naverUrl').textContent = new URL(url).hostname;
+            } catch (e) {
+                document.getElementById('naverUrl').textContent = url;
+            }
+            document.getElementById('naverDescription').textContent = enhancedDescription;
+
+            // 결과 섹션 표시
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showTab(tabName) {
+            // 모든 탭과 컨텐츠 비활성화
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // 선택된 탭과 컨텐츠 활성화
+            event.target.classList.add('active');
+            document.getElementById(tabName + '-tab').classList.add('active');
+        }
+
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId + 'Content');
+            const text = element.textContent;
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showCopySuccess(elementId);
+                }).catch(() => {
+                    fallbackCopyTextToClipboard(text, elementId);
+                });
+            } else {
+                fallbackCopyTextToClipboard(text, elementId);
+            }
+        }
+
+        function fallbackCopyTextToClipboard(text, elementId) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.position = "fixed";
+            
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                showCopySuccess(elementId);
+            } catch (err) {
+                console.error('복사 실패:', err);
+            }
+            
+            document.body.removeChild(textArea);
+        }
+
+        function showCopySuccess(elementId) {
+            const button = document.querySelector(`#${elementId} .copy-btn`);
+            const originalText = button.textContent;
+            button.textContent = '복사됨!';
+            button.style.background = '#27ae60';
+            
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.style.background = '#667eea';
+            }, 2000);
+        }
+
+        // 이벤트 리스너 등록
+        document.addEventListener('DOMContentLoaded', function() {
+            // 글자 수 카운터 이벤트 리스너
+            document.getElementById('title').addEventListener('input', function() {
+                updateCharCount('title', 'titleCount', 30, 60);
+            });
+            
+            document.getElementById('description').addEventListener('input', function() {
+                updateCharCount('description', 'descCount', 80, 160);
+            });
+
+            // 초기 설정
+            updateTemplates();
+            updateCharCountLabels();
+        });
+    </script>
+</body>
+</html>
